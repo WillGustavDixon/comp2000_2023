@@ -7,20 +7,22 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class StageReader {
-  public static Stage readStage(String path) throws IOException {
+  public static Stage readStage(String path) {
     Stage stage = new Stage();
     Properties props = (new Properties());
-    props.load(new FileInputStream(path));
-    for(String key: props.stringPropertyNames()) {
+    try {
+      FileInputStream file = new FileInputStream(path);
+      props.load(file);
+      for(String key: props.stringPropertyNames()) {
       String value = props.getProperty(key);
       Pattern cell = Pattern.compile("(.)(\\d+)");
-      List<Cell> cellsInQuestion = new ArrayList<Cell>();
+      List<Cell> cellsInQuestion = new ArrayList<>();
       Matcher cellMatcher = cell.matcher(key);
       if(cellMatcher.matches()) {
         char col = cellMatcher.group(1).charAt(0);
         int row = Integer.parseInt(cellMatcher.group(2));
-        // stage.grid.cellAtColRow(col, row).ifPresent(cellsInQuestion::add);
-        cellsInQuestion.add(stage.grid.cellAtColRow(col, row));
+        stage.grid.cellAtColRow(col, row).ifPresent(cellsInQuestion::add);
+        //cellsInQuestion.add(stage.grid.cellAtColRow(col, row));
       } else {
         System.out.println("no match " + key);
       }
@@ -33,6 +35,10 @@ public class StageReader {
           stage.actors.add(new Bird(c));
         }
       }
+    }
+    }
+    catch(IOException f) {
+      f.printStackTrace();
     }
     return stage;
   }
