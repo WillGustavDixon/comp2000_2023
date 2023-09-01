@@ -43,6 +43,9 @@ public abstract class Actor {
 
   public void performAction(List<Cell> posMoves) {
     if(loc.row % 2 == 0) {
+      
+    }
+    else {
 
     }
     int moveBotChooses = behaviour.setMovement(loc, posMoves);

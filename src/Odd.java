@@ -1,5 +1,4 @@
 import java.util.List;
-import java.util.Random;
 
 public class Odd implements ActorBehaviour {
 
@@ -7,7 +6,7 @@ public class Odd implements ActorBehaviour {
     public int setMovement(Cell loc, List<Cell> posMoves) {
         int leftmost = loc.col;
         for(int i = 0; i < posMoves.size(); i++) {
-            int temp = valueOf(posMoves.get(i).loc.col)
+            int temp = posMoves.get(i).col;
             if(temp < leftmost) {
                 leftmost = temp;
             }
