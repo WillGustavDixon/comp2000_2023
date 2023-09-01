@@ -7,6 +7,7 @@ public class Bird extends Actor {
     super(inLoc, Color.GREEN, isHuman, 3);
   }
 
+
   // Bird design courtesy of Sawyer James Rush
   protected void setPoly() {
     display = new ArrayList<Polygon>();

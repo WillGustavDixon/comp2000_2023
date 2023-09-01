@@ -7,6 +7,7 @@ public abstract class Actor {
   Color color;
   Cell loc;
   List<Polygon> display;
+  ActorBehaviour behaviour;
   boolean humanPlayer;
   int moves;
   int turns;
@@ -38,5 +39,13 @@ public abstract class Actor {
   public void setLocation(Cell inLoc) {
     loc = inLoc;
     setPoly();
+  }
+
+  public void performAction(List<Cell> posMoves) {
+    if(loc.row % 2 == 0) {
+
+    }
+    int moveBotChooses = behaviour.setMovement(loc, posMoves);
+    setLocation(posMoves.get(moveBotChooses));
   }
 }
