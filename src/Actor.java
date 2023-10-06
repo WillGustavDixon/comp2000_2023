@@ -11,6 +11,7 @@ public abstract class Actor {
   int moves;
   int turns;
   MoveStrategy strat;
+  AnimationBeat animBeat;
 
   protected Actor(Cell inLoc, Color inColor, Boolean isHuman, int inMoves) {
     setLocation(inLoc);
@@ -19,14 +20,23 @@ public abstract class Actor {
     moves = inMoves;
     turns = 1;
     setPoly();
+    animBeat = AnimationBeat.getInstance();
   }
 
   public void paint(Graphics g) {
     for(Polygon p: display) {
-      g.setColor(color);
-      g.fillPolygon(p);
-      g.setColor(Color.GRAY);
-      g.drawPolygon(p);
+      if (animBeat.inPhase() == 'a') {
+        g.setColor(color);
+        g.fillPolygon(p);
+        g.setColor(Color.GRAY);
+        g.drawPolygon(p);
+      }
+      else {
+        g.setColor(Color.PINK);
+        g.fillPolygon(p);
+        g.setColor(Color.GRAY);
+        g.drawPolygon(p);
+      }
     }
   }
 

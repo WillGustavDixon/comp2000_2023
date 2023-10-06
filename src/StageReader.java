@@ -37,6 +37,8 @@ public class StageReader {
             stage.actors.add(new Dog(c, human));
           } else if(value.equals("bird")) {
             stage.actors.add(new Bird(c, human));
+          } else if(value.equals("horse")) {
+            stage.actors.add(new HorseAdapter(new Horse(c, human)));
           }
         }
       }
