@@ -3,19 +3,21 @@ import java.awt.Graphics;
 import java.awt.Point;
 import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 import java.util.function.Consumer;
 
-public class Grid {
+public class Grid implements Iterable {
   Cell[][] cells = new Cell[20][20];
+  GridIterator gIterator;
   
   public Grid() {
     for(int i=0; i<cells.length; i++) {
       for(int j=0; j<cells[i].length; j++) {
         cells[i][j] = new Cell(colToLabel(i), j, 10+Cell.size*i, 10+Cell.size*j);
-      }
+      } // this one is fine
     }
   }
 
@@ -44,13 +46,12 @@ public class Grid {
   }
 
   public Optional<Cell> cellAtPoint(Point p) {
-    for(int i=0; i < cells.length; i++) {
-      for(int j=0; j < cells[i].length; j++) {
-        if(cells[i][j].contains(p)) {
-          return Optional.of(cells[i][j]);
-        }
+    while (gIterator.hasNext()) {
+      Cell c = gIterator.next();
+      if(c.contains(p)) {
+        return Optional.of(c);
       }
-    }
+    } 
     return Optional.empty();
   }
 
@@ -60,11 +61,10 @@ public class Grid {
    * @param func The `Cell` to `void` function to apply at each spot.
    */
   public void doToEachCell(Consumer<Cell> func) {
-    for(int i=0; i < cells.length; i++) {
-      for(int j=0; j < cells[i].length; j++) {
-        func.accept(cells[i][j]);
-      }
-    }
+    while (gIterator.hasNext()) {
+        Cell c = gIterator.next();
+        func.accept(c);
+    } 
   }
 
   public List<Cell> getRadius(Cell from, int size) {
@@ -87,7 +87,13 @@ public class Grid {
   public void paintOverlay(Graphics g, List<Cell> cells, Color color) {
     g.setColor(color);
     for(Cell c: cells) {
-      g.fillRect(c.x+2, c.y+2, c.width-4, c.height-4);
+      g.fillRect(c.x+2, c.y+2, c.width-4, c.height-4); 
     }
+  }
+
+  @Override
+  public Iterator iterator() {
+    gIterator = new GridIterator(cells);
+    return gIterator;
   }
 }
